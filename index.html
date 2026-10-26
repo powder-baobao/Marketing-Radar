@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marketing Radar · 营销情报与 AI 学习平台</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111a2b'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%2337e0a0' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='5' fill='none' stroke='%23ffb020' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='1.6' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+/* ===== token ===== */
+:root{
+  --nav-bg:#0c1322;
+  --nav-line:rgba(255,255,255,.08);
+  --bg:#f5f6f8;
+  --card:#ffffff;
+  --line:#e6e8ee;
+  --ink:#141a24;
+  --ink-2:#4b5563;
+  --ink-3:#8a94a6;
+  --accent:#0f7b4f;
+  --accent-soft:#e7f6ef;
+  --ai:#b45309;
+  --ai-soft:#fdf0dd;
+  --tag-bg:#eef1f6;
+  --tag-ink:#5b6472;
+  --radius:12px;
+  --shadow:0 1px 2px rgba(16,24,40,.04);
+  --maxw:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,-apple-system,sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.55;font-size:15px;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::selection{background:#bff0dc}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== layout ===== */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+/* ===== top nav ===== */
+.topbar{background:var(--nav-bg);color:#e8edf6;position:sticky;top:0;z-index:50;border-bottom:1px solid var(--nav-line)}
+.nav{display:flex;align-items:center;gap:14px;height:60px;flex-wrap:nowrap}
+.brand{display:flex;align-items:center;gap:10px;flex:none}
+.brand-mark{width:32px;height:32px;flex:none;background:radial-gradient(circle at 40% 35%,#2f4b7a,#111a2b);border:1px solid rgba(255,255,255,.14);border-radius:9px;display:flex;align-items:center;justify-content:center}
+.brand-name{font-weight:800;font-size:17px;letter-spacing:.2px;line-height:1.1}
+.brand-sub{font-size:10.5px;color:#8fa0bd;font-weight:500;letter-spacing:.4px}
+.nav-links{display:none;flex:1;gap:2px;margin-left:8px}
+.nav-link{color:#b8c3d8;font-size:14px;font-weight:500;padding:8px 12px;border-radius:8px;white-space:nowrap;transition:.15s}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.07)}
+.nav-link.on{color:#fff;background:rgba(255,255,255,.1)}
+.nav-link .dot{display:none;width:6px;height:6px;border-radius:50%;background:#37e0a0;margin-left:6px}
+.nav-link.on .dot{display:inline-block;vertical-align:middle}
+.nav-tools{display:flex;align-items:center;gap:8px;margin-left:auto}
+.search-pill{display:none;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:7px 12px;color:#93a1bb;font-size:13.5px;width:210px}
+.search-pill input{flex:1;min-width:0;background:none;border:none;outline:none;color:#eef2f9;font-size:16px;font-family:inherit}
+.search-pill input::placeholder{color:#8b98b1}
+.nav-badge{font-size:11px;color:#9fd8c0;background:rgba(55,224,160,.12);border:1px solid rgba(55,224,160,.25);padding:4px 9px;border-radius:20px;white-space:nowrap;display:none}
+.icon-btn{width:34px;height:34px;flex:none;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#c6d0e2}
+.icon-btn:hover{background:rgba(255,255,255,.08)}
+.mobile-search-btn{display:flex}
+.hamburger{display:flex}
+.nav-link.fake{display:none}
+
+/* ===== mobile nav sheet ===== */
+.sheet{position:fixed;inset:0;z-index:90;display:none}
+.sheet.open{display:block}
+.sheet-mask{position:absolute;inset:0;background:rgba(8,12,20,.5)}
+.sheet-panel{position:absolute;right:0;top:0;bottom:0;width:min(78vw,320px);background:#0c1322;color:#e8edf6;padding:22px 18px;display:flex;flex-direction:column;gap:6px;box-shadow:-10px 0 40px rgba(0,0,0,.3)}
+.sheet-panel .m-item{padding:14px 12px;border-radius:10px;font-size:15px;font-weight:600;color:#cdd6e6;display:flex;align-items:center;justify-content:space-between}
+.sheet-panel .m-item.on{background:rgba(255,255,255,.09);color:#fff}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;padding:6px 6px 16px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:10px}
+.sheet-status{font-size:12px;color:#9fd8c0;display:flex;align-items:center;gap:6px;margin:12px 6px}
+.sheet-search{margin:6px 0 10px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;color:#93a1bb;font-size:14px}
+.sheet-search input{flex:1;min-width:0;background:none;border:none;outline:none;color:#eef2f9;font-size:16px;font-family:inherit}
+.sheet-search input::placeholder{color:#8b98b1}
+
+/* ===== top strip (monitor) ===== */
+.strip{background:#0f1826;border-bottom:1px solid var(--nav-line);color:#c7d1e2}
+.strip-in{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;padding:9px 0;font-size:12.5px}
+.strip-label{color:#7c8bab;font-weight:600}
+.strip-sources{display:flex;gap:6px;flex-wrap:wrap}
+.strip-src{color:#aebad0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);padding:2px 9px;border-radius:6px;font-size:12px}
+.strip-date{margin-left:auto;color:#8fa0bd}
+.strip-health{display:flex;align-items:center;gap:6px;color:#9fd8c0;background:rgba(55,224,160,.1);border:1px solid rgba(55,224,160,.2);padding:3px 10px;border-radius:20px;font-size:12px;flex:none;white-space:nowrap;min-width:0}
+.strip-health > span:last-child{white-space:nowrap}
+.hdot{width:7px;height:7px;border-radius:50%;background:#37e0a0;box-shadow:0 0 0 3px rgba(55,224,160,.18)}
+
+/* ===== page shell ===== */
+.page{padding-block:22px 70px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+.page-title{font-size:22px;font-weight:800;letter-spacing:.2px}
+.page-sub{font-size:13px;color:var(--ink-3);margin-top:4px}
+.section{margin-top:26px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.section-title{font-size:16px;font-weight:750;display:flex;align-items:center;gap:9px}
+.section-title .bar{width:4px;height:16px;border-radius:2px;background:var(--accent)}
+.section-more{font-size:13px;color:var(--ink-3);display:flex;align-items:center;gap:4px}
+.section-more:hover{color:var(--accent)}
+
+/* ===== hero trend panel ===== */
+.hero{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);overflow:hidden;box-shadow:var(--shadow)}
+.hero-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px 18px;border-bottom:1px solid var(--line)}
+.hero-eyebrow{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.5px;display:flex;align-items:center;gap:7px}
+.hero-title{font-size:16.5px;font-weight:800;margin-top:4px;line-height:1.4}
+.hero-update{font-size:12px;color:var(--ink-3)}
+.points{display:grid;grid-template-columns:1fr;gap:0}
+.point{padding:15px 18px;display:flex;gap:14px;border-bottom:1px solid var(--line);align-items:flex-start}
+.point:last-child{border-bottom:none}
+.point-num{font-size:22px;font-weight:800;color:var(--accent);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.2;flex:none;width:30px}
+.point-body{flex:1;min-width:0}
+.point-text{font-size:14.5px;font-weight:600;line-height:1.5}
+.point-desc{font-size:12.5px;color:var(--ink-3);margin-top:3px}
+
+/* ===== hot words ===== */
+.hotwords{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.hotword{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:6px 13px;font-size:12.5px;color:var(--ink-2);transition:.15s}
+.hotword:hover{border-color:var(--accent);color:var(--accent)}
+.hotword b{color:var(--accent);font-weight:700}
+.hotword-label{font-size:12px;color:var(--ink-3);font-weight:600;display:inline-flex;align-items:center;margin-right:2px}
+
+/* ===== filter bar ===== */
+.filters{display:flex;flex-direction:column;gap:10px;margin-top:22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:14px 16px;box-shadow:var(--shadow)}
+.f-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.f-label{font-size:12.5px;color:var(--ink-3);font-weight:600;flex:none;width:64px}
+.f-ops{display:flex;gap:6px;flex-wrap:wrap}
+.f-op{font-size:12.5px;color:var(--ink-2);background:var(--tag-bg);border:1px solid transparent;padding:5px 11px;border-radius:18px;transition:.15s}
+.f-op:hover{border-color:#c9d2e0}
+.f-op.on{background:#0c1322;color:#fff}
+.f-op.green.on{background:var(--accent)}
+.f-right{margin-left:auto}
+.f-head{align-items:center}
+.f-summary{font-size:12.5px;color:var(--ink-3);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.f-toggle{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:600;color:var(--ink-2);background:var(--tag-bg);padding:5px 11px;border-radius:18px;transition:.15s}
+.f-toggle:hover{background:#e2e7f0}
+.f-toggle svg{transition:transform .2s}
+.f-body{margin-top:4px}
+.count-pill{font-size:12.5px;color:var(--ink-2);background:var(--tag-bg);padding:5px 12px;border-radius:18px;font-weight:600}
+.reset-link{font-size:12.5px;color:var(--accent);font-weight:600;display:none}
+.reset-link.show{display:inline-block}
+.reset-link:hover{text-decoration:underline}
+
+/* ===== card grid ===== */
+.card-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:17px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:.16s;position:relative}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(16,24,40,.08);border-color:#cdd6e2}
+.card-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.src-pill{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:6px;color:#fff}
+.src-pill.s0{background:#1d4ed8}
+.src-pill.s1{background:#b91c1c}
+.src-pill.s2{background:#0e7490}
+.src-pill.s3{background:#7c3aed}
+.src-pill.s4{background:#be185d}
+.type-tag{font-size:11px;color:var(--ink-2);background:var(--tag-bg);padding:3px 8px;border-radius:6px;font-weight:600}
+.pick-tag{font-size:11px;color:#b45309;background:var(--ai-soft);padding:3px 8px;border-radius:6px;font-weight:700}
+.card-time{margin-left:auto;font-size:11.5px;color:var(--ink-3)}
+.card-title{font-size:15px;font-weight:700;line-height:1.45}
+.card:hover .card-title{color:#0b6b48}
+.card-brief{font-size:13px;color:var(--ink-2);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11.5px;color:var(--tag-ink);background:var(--tag-bg);padding:2px 8px;border-radius:6px}
+.card-ai{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--ai);background:var(--ai-soft);padding:4px 9px;border-radius:6px;width:fit-content}
+.card-ai .spark{width:12px;height:12px;flex:none}
+.card-ai.wait{color:var(--ink-3);background:var(--tag-bg)}
+.card-foot{margin-top:auto;display:flex;align-items:center;gap:8px}
+.link-btn{font-size:12.5px;color:var(--accent);font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.link-btn:hover{text-decoration:underline}
+.fav-btn{margin-left:auto;font-size:12px;color:var(--ink-3);display:inline-flex;align-items:center;gap:4px}
+.fav-btn:hover{color:var(--accent)}
+.fav-btn.on{color:#e8590c}
+
+/* ===== empty & loading ===== */
+.state-box{padding:54px 20px;text-align:center;color:var(--ink-3);border:1px dashed var(--line);border-radius:var(--radius);background:var(--card)}
+.state-box .big{font-size:30px;font-weight:800;color:#cdd4e0;display:block;margin-bottom:8px}
+.state-box p{font-size:13.5px}
+
+/* ===== detail ===== */
+.modal{position:fixed;inset:0;z-index:100;display:none}
+.modal.open{display:block}
+.modal-mask{position:absolute;inset:0;background:rgba(10,14,22,.55)}
+.modal-panel{position:absolute;top:0;right:0;bottom:0;width:100%;max-width:640px;background:#fff;overflow-y:auto;padding:26px 26px 60px;box-shadow:-16px 0 60px rgba(0,0,0,.25);animation:slide .25s ease}
+@keyframes slide{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+.modal-close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:9px;background:var(--tag-bg);display:flex;align-items:center;justify-content:center;color:var(--ink-2)}
+.modal-close:hover{background:#e2e7f0;color:var(--ink)}
+.d-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.d-title{font-size:21px;font-weight:800;line-height:1.4;margin-bottom:12px}
+.d-stats{display:flex;gap:18px;flex-wrap:wrap;padding:13px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:18px}
+.d-stat b{display:block;font-size:14px}
+.d-stat span{font-size:11.5px;color:var(--ink-3)}
+.d-block{margin-bottom:22px}
+.d-block h3{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.d-block h3 .bar{width:4px;height:14px;border-radius:2px;background:var(--accent)}
+.d-block p{font-size:13.5px;color:var(--ink-2);line-height:1.7}
+.d-summary p{font-size:13.5px;color:var(--ink-2);line-height:1.75;margin:6px 0}
+.d-summary p.sum-head{font-size:13.5px;font-weight:700;color:var(--ink-1);margin:12px 0 4px}
+.d-summary strong{font-weight:700;color:var(--ink-1)}
+.note-area{width:100%;min-height:92px;box-sizing:border-box;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:13.5px;line-height:1.6;color:var(--ink-1);background:#fff;resize:vertical}
+.note-area:focus{outline:none;border-color:var(--accent)}
+.note-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.note-hint{font-size:12px;color:var(--ink-3)}
+.note-save{background:var(--accent);color:#fff;padding:8px 18px}
+.note-save:hover{background:#0a643f}
+.note-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.note-card{cursor:pointer}
+.note-del{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink-3);cursor:pointer;transition:.15s}
+.note-del:hover{color:#c62828;border-color:#e2b4b4;background:#fdf3f3}
+.note-body{font-size:13.5px;color:var(--ink-2);line-height:1.7;margin-top:9px;white-space:pre-wrap;word-break:break-word}
+.ai-panel{background:#fffbf3;border:1px solid #f3e3c4;border-radius:10px;padding:14px 16px}
+.ai-panel h3{color:var(--ai)}
+.d-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.btn{font-size:14px;font-weight:600;padding:11px 20px;border-radius:9px;transition:.15s;display:inline-flex;align-items:center;gap:7px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#0a643f}
+.btn-ghost{background:var(--tag-bg);color:var(--ink-2)}
+.btn-ghost:hover{background:#e2e7f0}
+.btn.ai{background:var(--ai);color:#fff}
+.btn.ai:hover{background:#8f4007}
+
+/* ===== footer ===== */
+.footer{border-top:1px solid var(--line);background:#eef0f4;color:var(--ink-3);padding:28px 0 40px;font-size:12.5px}
+.foot-in{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.foot-src{display:flex;gap:6px;flex-wrap:wrap}
+.foot-src span{background:#fff;border:1px solid var(--line);padding:3px 10px;border-radius:6px;font-weight:600;color:var(--ink-2)}
+.foot-note{max-width:600px;line-height:1.7}
+.foot-note a{color:var(--accent)}
+.foot-note a:hover{text-decoration:underline}
+
+.kv-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:6px}
+.kv{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kv h4{font-size:13px;font-weight:700;margin-bottom:3px}
+.kv p{font-size:12.5px;color:var(--ink-3);line-height:1.6}
+
+/* ===== search view ===== */
+.searchbox{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.searchbox input{flex:1;min-width:0;border:none;outline:none;font-size:15px;font-family:inherit;color:var(--ink);background:none}
+.searchbox input::placeholder{color:var(--ink-3)}
+.search-go{background:var(--accent);color:#fff;font-weight:700;padding:10px 22px;border-radius:9px;font-size:14px}
+.search-go:hover{background:#0a643f}
+.search-stat{font-size:13px;color:var(--ink-3);margin-top:12px}
+
+/* ===== responsive ===== */
+@media (max-width:767px){
+  .strip-date{display:none}
+  .strip-health{white-space:nowrap}
+  .strip-in{gap:6px 10px}
+}
+@media (min-width:768px){
+  .nav-links{display:flex}
+  .nav-badge{display:block}
+  .mobile-search-btn{display:none}
+  .hamburger{display:none}
+  .search-pill{display:flex}
+  .nav-link.fake{display:block}
+  .card-grid{grid-template-columns:repeat(2,1fr)}
+  .note-grid{grid-template-columns:repeat(2,1fr)}
+  .points{grid-template-columns:repeat(3,1fr)}
+  .point{border-bottom:none;border-right:1px solid var(--line)}
+  .point:last-child{border-right:none}
+  .kv-grid{grid-template-columns:repeat(2,1fr)}
+  .page-title{font-size:25px}
+}
+@media (min-width:1080px){
+  .card-grid{grid-template-columns:repeat(3,1fr)}
+  .kv-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+<!-- ===== 顶部导航 ===== -->
+<header class="topbar">
+  <div class="wrap nav">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="11" stroke="#37e0a0" stroke-width="2.4"/><circle cx="16" cy="16" r="5" stroke="#ffb020" stroke-width="2.4"/><circle cx="16" cy="16" r="1.7" fill="#fff"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">Marketing Radar</div>
+        <div class="brand-sub">营销情报与 AI 学习平台</div>
+      </div>
+    </div>
+    <nav class="nav-links" id="navLinks">
+      <a class="nav-link" data-view="home" href="#/"><span>每日情报</span><span class="dot"></span></a>
+      <a class="nav-link" data-view="news" href="#/news"><span>品牌资讯</span><span class="dot"></span></a>
+      <a class="nav-link" data-view="cases" href="#/cases"><span>营销案例</span><span class="dot"></span></a>
+      <a class="nav-link" data-view="ai" href="#/ai"><span>AI营销专区</span><span class="dot"></span></a>
+      <a class="nav-link" data-view="bookmarks" href="#/bookmarks"><span>我的收藏</span><span class="dot"></span></a>
+      <a class="nav-link" data-view="notes" href="#/notes"><span>我的笔记</span><span class="dot"></span></a>
+      <a class="nav-link fake" data-view="admin" href="#/admin"><span>运营后台</span></a>
+    </nav>
+    <div class="nav-tools">
+      <div class="search-pill">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" id="deskSearch" placeholder="搜索品牌、战役、关键词" aria-label="搜索">
+      </div>
+      <div class="nav-badge"><span class="hdot" style="width:6px;height:6px"></span>同步更新</div>
+      <button class="icon-btn mobile-search-btn" id="mSearchBtn" aria-label="搜索">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <button class="icon-btn hamburger" id="hamburger" aria-label="菜单">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <!-- 监测条 -->
+  <div class="strip">
+    <div class="wrap strip-in">
+      <span class="strip-label">今日监测</span>
+      <span>覆盖 5 大官方信源：</span>
+      <div class="strip-sources">
+        <span class="strip-src">品牌星球</span><span class="strip-src">虎嗅网</span><span class="strip-src">36氪</span><span class="strip-src">SocialBeta</span><span class="strip-src">数英网</span>
+      </div>
+      <span class="strip-date" id="stripDate"></span>
+      <span class="strip-health"><span class="hdot"></span>信源健康度：正常</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== 移动端抽屉 ===== -->
+<div class="sheet" id="sheet">
+  <div class="sheet-mask" data-close-sheet></div>
+  <div class="sheet-panel">
+    <div class="sheet-head">
+      <div class="brand-name" style="font-size:16px">Marketing Radar</div>
+      <button class="icon-btn" data-close-sheet style="color:#c6d0e2"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="sheet-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="text" id="sheetSearch" placeholder="搜索品牌、战役、关键词">
+    </div>
+    <div class="m-item" data-v="home" data-close-sheet>每日情报</div>
+    <div class="m-item" data-v="news" data-close-sheet>品牌资讯</div>
+    <div class="m-item" data-v="cases" data-close-sheet>营销案例</div>
+    <div class="m-item" data-v="ai" data-close-sheet>AI营销专区</div>
+    <div class="m-item" data-v="bookmarks" data-close-sheet>我的收藏</div>
+    <div class="m-item" data-v="notes" data-close-sheet>我的笔记</div>
+    <div class="sheet-status"><span class="hdot"></span>信源健康度：正常 · 今日同步更新</div>
+  </div>
+</div>
+
+<!-- ===== 主内容 ===== -->
+<main class="wrap page" id="app"></main>
+
+<!-- ===== 详情弹层 ===== -->
+<div class="modal" id="modal">
+  <div class="modal-mask" data-close-modal></div>
+  <div class="modal-panel" id="modalPanel"></div>
+</div>
+
+<!-- ===== 页脚 ===== -->
+<footer class="footer">
+  <div class="wrap foot-in">
+    <div class="foot-src">
+      <span>品牌星球</span><span>虎嗅网</span><span>36氪</span><span>SocialBeta</span><span>数英网</span>
+    </div>
+    <div class="foot-note">
+      Marketing Radar · 面向营销策划从业者的情报与案例学习平台。内容来源与版权归属各原媒体；本站仅提供标题、合规摘要与原文跳转。观点归原作者。遇到版权或内容问题，可<a href="javascript:;" data-feedback>提交反馈</a>。
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== 示例数据（演示用，非实时抓取；标题与摘要为示意） ===== */
+const SOURCES=[
+  {name:"品牌星球", cls:"s0", url:"https://www.brandstar.com.cn/"},
+  {name:"虎嗅网",   cls:"s1", url:"https://www.huxiu.com/"},
+  {name:"36氪",     cls:"s2", url:"https://36kr.com/"},
+  {name:"SocialBeta",cls:"s3", url:"https://socialbeta.com/"},
+  {name:"数英网",   cls:"s4", url:"https://www.digitaling.com/"}
+];
+const RAW=[
+{id:1,src:1,stype:"news",title:"耐克启动近年来最大规模渠道变革：直面DTC陷阱，重回专业运动叙事与实体联名",brief:"耐克宣布调整渠道结构，压缩过度直销带来的库存与折扣压力，回归专业运动场景，并重新押注实体联名与社群活动。",cat:"服饰鞋包",mt:"渠道变革",ch:"线下·实体零售",time:"刚刚",feat:1,tags:["耐克","DTC","实体零售","渠道"],ai:1,aiText:"耐克此前DTC占比过高导致促销侵蚀利润，此番转向意在平衡直营与经销、强化专业运动心智。对行业而言，纯DTC不等于利润保障，渠道结构需随品牌阶段动态调整。"},
+{id:2,src:4,stype:"case",title:"珀莱雅重阳节特别企划《老去是一件很酷的事》：反焦虑议题如何引爆千万级情绪共振",brief:"珀莱雅在重阳节发起关于衰老与年龄焦虑的公共议题企划，以'老去也可以很酷'的视角输出内容并联动媒体与素人，实现全网高讨论。",cat:"美妆护肤",mt:"议题营销",ch:"微信·社媒",time:"刚刚",feat:1,tags:["珀莱雅","重阳节","反焦虑","议题营销"],ai:1,aiText:"策略上把品牌诉求（抗老产品）转化为社会议题而非卖点宣讲，降低了广告感。借鉴点是'品牌议题要承接公共情绪、先给态度再谈产品'，并需要足够的媒体与素人声量做放大器。"},
+{id:3,src:3,stype:"news",title:"SocialBeta 青年消费洞察：‘轻量化自治生活’正在重塑秋季品牌营销关键词",brief:"报告指出年轻人转向'小半径、低负担、自我掌控'的生活方式，品牌秋季沟通开始用轻量场景、极简仪式与情绪自治替代宏大叙事。",cat:"生活方式",mt:"消费趋势",ch:"报告·洞察",time:"刚刚",feat:1,tags:["青年消费","生活方式","秋季营销"],ai:0,aiText:"未披露"},
+{id:4,src:0,stype:"ai",title:"生成式AI进入工业化素材赛马阶段：从单片炫技走向海量个性化降本增效",brief:"品牌开始把AI用于批量生成多版本创意素材并AB测试，由'一支惊艳广告'转向'海量个性化素材赛马'，营销生产成本与效率结构被重写。",cat:"AI营销",mt:"AI应用",ch:"多平台",time:"2小时前",feat:1,tags:["生成式AI","素材生产","降本增效"],ai:1,aiText:"核心变化是AI从'内容demo'变为'生产线'：规模化产出变体、实时AB、按渠道自动适配。营销人价值从'做一条片'转向'定策略、定风格锚点、看数据反馈'。"},
+{id:5,src:0,stype:"ai",title:"国货美妆与生活方式品牌转向不可逆的社会议题叙事，摆脱单纯低价内卷",brief:"越来越多本土品牌将价值观表达纳入长期沟通，用可持续、性别议题、公共情绪承接塑造品牌溢价，而非只打价格战。",cat:"美妆护肤",mt:"品牌战略",ch:"社媒·公关",time:"3小时前",feat:0,tags:["国货","议题叙事","品牌溢价"],ai:0,aiText:"未生成"},
+{id:6,src:2,stype:"news",title:"新茶饮与快消线下零售探索‘第三空间文化在地化’与大单品心智闭环",brief:"头部茶饮品牌尝试把门店做成在地文化空间，同时围绕招牌大单品建立复购心智，探索场景价值与产品价值双轮驱动。",cat:"餐饮茶饮",mt:"门店体验",ch:"线下",time:"4小时前",feat:0,tags:["新茶饮","第三空间","大单品"],ai:1,aiText:"趋势是'场景引流+单品锁客'：用在地文化让门店成为打卡目的地，再用强复购单品把流量沉淀为品牌资产。需警惕空间投入与单店模型平衡。"},
+{id:7,src:1,stype:"news",title:"可灵、Sora等视频模型重塑广告片场：AI短剧与TVC量产进入实操阶段",brief:"可灵、Sora等视频生成模型在广告与短剧制作中落地，多家代理商开始用AI完成分镜、动态与合成，传统TVC生产周期明显缩短。",cat:"广告创意",mt:"AI应用",ch:"视频",time:"5小时前",feat:0,tags:["可灵","Sora","视频模型","TVC"],ai:1,aiText:"视频模型正把'拍TVC'变成'生成+剪辑'流程。优势是快、可迭代、成本低；风险是版权、一致性、审美趋同，行业正在沉淀'AI+真人补拍'混合工作流。"},
+{id:8,src:3,stype:"case",title:"麦当劳‘门’自发梗文化沉淀：品牌如何接住用户玩梗并把梗变成资产",brief:"消费者围绕麦当劳门店产生大量自发言语梗，品牌顺势参与互动、推出周边与线下活动，把UGC梗文化沉淀为长期品牌资产。",cat:"餐饮快餐",mt:"用户共创",ch:"社媒",time:"6小时前",feat:0,tags:["麦当劳","梗文化","UGC"],ai:1,aiText:"成功在于'接得住、会放大、敢下场'：官方不过度表态、而是参与并共创周边，让用户感到'被看见'。梗文化的运营核心是让渡一部分表达权给用户。"},
+{id:9,src:2,stype:"ai",title:"即时零售‘30分钟场景突围’：从应急到习惯，品牌如何卡位时效心智",brief:"即时零售正从'应急购买'走向'日常习惯'，品牌围绕30分钟达的场景做选品、包装与内容，抢占时效心智与新渠道货架。",cat:"零售",mt:"即时零售",ch:"O2O·小程序",time:"7小时前",feat:0,tags:["即时零售","30分钟","O2O"],ai:0,aiText:"未生成"},
+{id:10,src:0,stype:"news",title:"品牌星球观察：生活方式品牌集体做‘小而美的长期主义’，拒绝流量速朽",brief:"一批生活方式品牌放慢上新节奏，专注复购、会员与线下体验，用'长期主义'对抗流量逻辑，探索可持续的生意模型。",cat:"生活方式",mt:"品牌战略",ch:"会员·私域",time:"昨天",feat:0,tags:["生活方式","长期主义","会员"],ai:1,aiText:"这批品牌把重心从'拉新'转向'留住'：通过会员体系、内容社群与线下体验提升LTV。对营销人启示是流量红利见顶后，用户关系运营比曝光更重要。"},
+{id:11,src:1,stype:"news",title:"虎嗅深度：消费电子新品密集发布，场景化叙事成为卖点标配",brief:"消费电子品牌在新品营销中普遍从'参数罗列'转向'场景化叙事'，强调在真实生活场景中的体验价值。",cat:"科技数码",mt:"新品营销",ch:"线上·直播",time:"昨天",feat:0,tags:["消费电子","场景化","新品"],ai:0,aiText:"未生成"},
+{id:12,src:4,stype:"case",title:"数英案例：某茶饮联名艺术IP，用‘一杯能喝的艺术’打通小红书种草",brief:"茶饮品牌联合艺术IP推出限定包装与线下快闪，围绕'可喝的艺术'做小红书内容种草，实现声量、到店与复购联动。",cat:"餐饮茶饮",mt:"联名营销",ch:"小红书",time:"昨天",feat:0,tags:["联名","艺术IP","小红书","种草"],ai:1,aiText:"拆解：①IP选择与品牌调性强关联；②'可喝的艺术'提供清晰的内容钩子，便于UGC二次创作；③快闪制造到店理由。联名要给出'为什么值得分享'的一句话答案。"},
+{id:13,src:2,stype:"news",title:"36氪：AIGC客服与私域自动化升级，品牌经营效率竞争转向‘人机协同’",brief:"更多品牌在私域引入AI客服与自动化运营，实现7×24应答与个性化触达，运营重心从堆人力转向人机协同的精细化。",cat:"科技",mt:"私域运营",ch:"私域",time:"昨天",feat:0,tags:["AIGC","客服","私域","人机协同"],ai:1,aiText:"AI承担高频标准化应答，真人聚焦复杂与高价值场景。关键是语料与知识库质量，以及'AI不可答时的无缝转人工'，避免体验断层。"},
+{id:14,src:3,stype:"case",title:"SocialBeta 案例：本土运动品牌用‘城市跑步社群’把门店变成能量站",brief:"运动品牌在核心城市运营跑步社群，以门店为聚合点组织晨跑、装备体验与社交，用社群粘性反哺销售与复购。",cat:"运动户外",mt:"社群运营",ch:"线下·社群",time:"前天",feat:0,tags:["运动品牌","跑步社群","门店"],ai:0,aiText:"未生成"},
+{id:15,src:4,stype:"ai",title:"数英观察：AI视频广告进入‘可控性’竞赛，提示词工程与镜头语言成新门槛",brief:"品牌与代理商围绕AI视频生成的可控性展开探索，提示词工程、镜头语言与风格一致性成为新的创意能力门槛。",cat:"广告创意",mt:"AI应用",ch:"视频",time:"前天",feat:0,tags:["AI视频","提示词","镜头语言"],ai:1,aiText:"AI视频从'能生成'走向'可控生成'：镜头调度、角色一致性、情绪控制决定广告质感。创意团队需要补齐提示词工程与分镜能力，形成'人定框架、AI出素材'的协作。"},
+{id:16,src:0,stype:"news",title:"品牌星球：香水与个护品牌以‘气味叙事’做高端化，情绪价值成溢价核心",brief:"香水及高端个护品牌通过气味、场景与故事构建情绪价值，用'气味叙事'支撑高定价与品牌忠诚。",cat:"美妆个护",mt:"高端化",ch:"社媒·线下",time:"前天",feat:0,tags:["香水","气味叙事","高端化"],ai:0,aiText:"未生成"},
+{id:17,src:1,stype:"news",title:"虎嗅：AI搜索与信息流重构用户内容获取，品牌投放逻辑随之迁移",brief:"AI搜索与个性化信息流改变用户获取信息的方式，品牌营销正在从'铺渠道'转向'在AI答案中被提及、被推荐'。",cat:"科技",mt:"渠道变革",ch:"AI搜索",time:"前天",feat:0,tags:["AI搜索","信息流","投放"],ai:1,aiText:"当用户越来越多向AI提问，品牌需要经营'AI可见度'：结构化的品牌信息、权威内容沉淀与真实口碑会进入AI的回答依据。这是一个新的SEO/SEO-like战场。"},
+{id:18,src:3,stype:"case",title:"SocialBeta 案例：美妆品牌‘情绪茶话会’直播，把产品沟通做成闺蜜式陪伴",brief:"美妆品牌用'情绪茶话会'式直播替代传统叫卖，围绕情绪话题展开陪伴式沟通，提升停留与转化。",cat:"美妆护肤",mt:"直播营销",ch:"直播",time:"近7天",feat:0,tags:["直播","情绪营销","美妆"],ai:0,aiText:"未生成"},
+{id:19,src:4,stype:"case",title:"数英案例：汽车品牌用‘可被看见的公益’做品牌长期主义，环保行动落成城市IP",brief:"汽车品牌将公益与环保行动做成可参与、可传播的城市项目，让品牌长期主义被看见并沉淀为城市记忆点。",cat:"汽车",mt:"公益营销",ch:"线下·公关",time:"近7天",feat:0,tags:["汽车","公益","长期主义"],ai:1,aiText:"把抽象的品牌价值翻译成'具体的城市行动'，用户可参与、媒体有故事、品牌有素材，形成三方共赢的传播飞轮。公益营销关键在可持续，而非单次刷好感。"},
+{id:20,src:2,stype:"ai",title:"36氪：AI Agent 上岗营销团队，从写文案到跨工具执行任务闭环",brief:"营销团队开始用AI Agent串联调研、策划、文案、投放与复盘，实现'一句话到执行'的跨工具任务闭环。",cat:"AI营销",mt:"AI工作流",ch:"多平台",time:"近7天",feat:0,tags:["AI Agent","工作流","自动化"],ai:1,aiText:"Agent的价值是'连接工具、执行多步任务'。营销人可把重复性工作交给Agent，自己专注策略判断与创意。落地需注意数据权限与人工审核环节。"},
+{id:21,src:0,stype:"news",title:"品牌星球：童装品牌靠‘亲子内容社区’做口碑，弱化广告强化陪伴",brief:"童装品牌运营亲子内容社区，通过育儿知识与陪伴内容建立信任，将口碑转化为复购。",cat:"母婴童装",mt:"内容社区",ch:"私域·社群",time:"近7天",feat:0,tags:["童装","亲子社区","口碑"],ai:0,aiText:"未生成"},
+{id:22,src:3,stype:"case",title:"SocialBeta 案例：啤酒品牌夏季‘限时街区’企划，把品牌体验做成社交事件",brief:"啤酒品牌在夏季打造限时街区活动，融合音乐、美食与社交互动，把产品体验升级为城市级社交事件。",cat:"食品饮料",mt:"事件营销",ch:"线下活动",time:"近7天",feat:0,tags:["啤酒","夏季","事件营销","街区"],ai:0,aiText:"未生成"},
+{id:23,src:4,stype:"case",title:"数英案例：科技品牌用‘白牌故事’讲研发温度，硬核参数变人格化表达",brief:"科技品牌以工程师与产品故事为切口，用'白牌背后的人'软化硬核参数，增强品牌温度与信任。",cat:"科技数码",mt:"内容营销",ch:"社媒·视频",time:"近7天",feat:0,tags:["科技","内容营销","人物故事"],ai:1,aiText:"把品牌人格化：用具体的人、具体的研发瞬间传递价值，比参数更有记忆点。适合技术复杂度高、需建立信任感的品类。"},
+{id:24,src:1,stype:"ai",title:"虎嗅：大模型降价与开源浪潮，中小品牌也能用上企业级AI营销能力",brief:"大模型降价与开源普及，让中小品牌也能以低成本接入AI营销能力，营销技术普惠化加速。",cat:"AI营销",mt:"AI工具",ch:"多平台",time:"近7天",feat:0,tags:["大模型","降价","中小品牌"],ai:0,aiText:"未生成"},
+{id:25,src:2,stype:"news",title:"36氪：银发经济升温，品牌聚焦‘适老化体验’做增量市场",brief:"银发经济成为消费新增长点，品牌围绕适老化产品与体验设计拓展中老年增量市场。",cat:"大健康",mt:"新人群",ch:"线下·社媒",time:"近7天",feat:0,tags:["银发经济","适老化","增量"],ai:1,aiText:"银发不是'低价'而是'细分'：适老化体验、陪伴式服务与健康价值是被忽视的溢价点。品牌需要重构'年龄'叙事，避免刻板印象。"},
+{id:26,src:0,stype:"news",title:"品牌星球：宠物经济精细化，品牌从‘卖货’转向‘养宠生活方式’",brief:"宠物品牌围绕'养宠生活方式'做场景延伸，从用品销售扩展到健康、社交与内容服务。",cat:"宠物",mt:"场景延伸",ch:"私域·社媒",time:"近30天",feat:0,tags:["宠物","生活方式","场景"],ai:0,aiText:"未生成"},
+{id:27,src:3,stype:"case",title:"SocialBeta 案例：咖啡品牌联合骑行俱乐部做‘城市漫游’，绑定品质生活方式",brief:"咖啡品牌与骑行俱乐部合作'城市漫游'活动，把咖啡与品质生活方式绑定，强化品牌调性。",cat:"食品饮料",mt:"跨界合作",ch:"线下·社群",time:"近30天",feat:0,tags:["咖啡","骑行","生活方式"],ai:1,aiText:"跨界选择的逻辑是'人群重叠+调性互补'：骑行人群与精品咖啡受众高度重合，活动既提供体验又强化品牌生活方式标签，是低成本高质感的内容来源。"},
+{id:28,src:4,stype:"case",title:"数英案例：文旅品牌用‘在地共创’把游客变内容生产者，县域出圈",brief:"文旅品牌发起在地共创计划，邀请游客与本地人共同产出内容，带动县域目的地出圈。",cat:"文旅",mt:"在地营销",ch:"社媒·UGC",time:"近30天",feat:0,tags:["文旅","在地共创","出圈"],ai:0,aiText:"未生成"},
+{id:29,src:1,stype:"ai",title:"虎嗅：AI数字人直播降本，品牌试水‘24小时AI主播’无人直播",brief:"AI数字人直播成本降至真人1/10，部分品牌开始试水24小时无人直播，形成店播之外的流量补充。",cat:"零售",mt:"AI直播",ch:"直播",time:"近30天",feat:0,tags:["数字人","直播","降本"],ai:1,aiText:"数字人直播的价值在于'低成本的时段覆盖'，适合标准化产品与店播场景。局限是互动与信任度，建议真人+AI搭配，用AI打时长、真人打信任。"},
+{id:30,src:0,stype:"news",title:"品牌星球：户外品牌押注‘城市轻户外’，把露营风潮日常化",brief:"户外品牌将重心从专业场景转向城市轻户外，推出通勤与露营两用的产品线，拥抱都市日常。",cat:"户外运动",mt:"品类拓展",ch:"多平台",time:"近30天",feat:0,tags:["户外","轻户外","通勤"],ai:0,aiText:"未生成"},
+{id:31,src:2,stype:"news",title:"36氪：情绪价值消费加速，品牌把‘被理解’做进产品与营销",brief:"情绪价值消费成为趋势，品牌在产品设计与营销中强调'被理解、被陪伴'，把情绪体验做成差异化。",cat:"生活方式",mt:"情绪价值",ch:"社媒·线下",time:"近30天",feat:0,tags:["情绪价值","陪伴","差异化"],ai:0,aiText:"未生成"}
+];
+
+/* ===== 核心状态 ===== */
+const state={
+  view:"home",
+  q:"",
+  filters:{date:"today",src:"all",cat:"all",mt:"all",ch:"all",type:"all"},
+  bookmarks:new Set(JSON.parse(localStorage.getItem("mr_bm")||"[]")),
+  notes:JSON.parse(localStorage.getItem("mr_notes")||"{}"),
+  detailId:null
+};
+const $=s=>document.querySelector(s);
+const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!==undefined)e.innerHTML=html;return e;};
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+/* 清洗抓取到的正文：去掉开头的"标题-来源名"重复片段 + markdown ** 星号。返回纯文本（卡片用）。 */
+function cleanBrief(brief, it){
+  if(!brief) return "";
+  const title=(it&&it.title||"").trim();
+  const src=(it&&SOURCES[it.src]&&SOURCES[it.src].name)||"";
+  let s=String(brief);
+  // 1) 剥离开头的重复标题片段："标题-来源名"、"标题"（无论是否紧跟正文）
+  if(title){
+    for(const v of [title+"-"+src, title]){
+      if(v && s.indexOf(v)===0){ s=s.slice(v.length); break; }
+    }
+  }
+  // 2) 去 markdown 星号（** 和单个 *）
+  s=s.replace(/\*\*/g,"").replace(/\*/g,"");
+  // 3) 去多余空白
+  s=s.replace(/\s+/g," ").trim();
+  return s;
+}
+/* 把抓取正文转成可读 HTML：剥离标题重复前缀、去 ** 星号、"要点"等小节标题加粗。详情弹层用。 */
+function renderBrief(brief, it){
+  if(!brief) return `<p style="color:var(--ink-3)">暂无概要</p>`;
+  const title=(it&&it.title||"").trim();
+  const src=(it&&SOURCES[it.src]&&SOURCES[it.src].name)||"";
+  let s=String(brief);
+  // 1) 剥离开头的重复标题前缀
+  if(title){
+    for(const v of [title+"-"+src, title]){
+      if(v && s.indexOf(v)===0){ s=s.slice(v.length); break; }
+    }
+  }
+  // 2) 小节标题（**要点** / **1. xxx** / 行首 **内容**）→ <span class="sum-head">
+  s=s.replace(/\*\*\s*([^\n*]{1,20}?)\s*\*\*(?=[^\n]|$)/g, (m,p)=>{
+    if(/^(要点|结论|总结|解读|分析|亮点|风险|小结|摘要)/.test(p)) return `<span class="sum-head">${p}</span>`;
+    return `<strong>${p}</strong>`;
+  });
+  // 3) 剩余 ** 星号去掉
+  s=s.replace(/\*/g,"");
+  // 4) 编号拆段：每条 "1. / 2. / 要点1." 要点独立成段（要求点号后有空白，避免拆坏 "2.63" 这类数字）
+  s=s.replace(/(要点)?\d+\s*[.、]\s+(?=\S)/g, m=>"\n"+m.trim());
+  // 5) 段落化
+  const paras=s.split("\n").map(t=>t.trim()).filter(Boolean).map(t=>`<p>${t}</p>`).join("");
+  return paras || `<p style="color:var(--ink-3)">暂无概要</p>`;
+}
+function todayStr(){const d=new Date();return (d.getMonth()+1)+"月"+d.getDate()+"日 星期"+"日一二三四五六"[d.getDay()];}
+
+/* ===== 工具：判断时间分组 ===== */
+const timeOrder={0:0,1:1,2:2,3:3,4:4,5:4};
+const timeLabel={0:"今天",1:"昨天",2:"前天",3:"近7天",4:"近30天"};
+function timeRank(t){const map={"刚刚":0,"2小时前":0,"3小时前":0,"4小时前":0,"5小时前":0,"6小时前":0,"7小时前":0,"昨天":1,"前天":2,"近7天":3,"近30天":4};return map[t]??4;}
+
+/* ===== 实时数据层 =====
+ * 内置 RAW 为离线示例；启动时尝试加载 DATA_URL 指向的抓取产物 data.json，
+ * 成功则切换为实时数据，失败保留示例兜底。
+ * DATA_URL 由部署者在腾讯云 COS 设置后填写（留空 = 仅展示示例）。 */
+const DATA_URL = "https://marketing-radar-data-1515990128.cos.ap-shanghai.myqcloud.com/data.json";
+let ALL = RAW.slice();
+let LIVE = false;
+let LIVE_UPDATED = "";
+let LIVE_SOURCE = {};   // 各源抓取状态
+
+const SRC_KEY = ["brandstar","huxiu","36kr","socialbeta","digitaling"];
+function normItem(it, idx){
+  // 抓取数据字段 → 卡片所需字段
+  const srcIdx = SRC_KEY.indexOf(it.source);
+  const s = srcIdx >= 0 ? srcIdx : 1;
+  const stype = it.ctype || ((s===3||s===4) ? "case" : "news");
+  // 来源级默认分类（抓取仅提取标题+摘要+链接，AI 分类由后续后端补）
+  const srcCat = ["品牌战略","商业科技","消费市场","营销传播","广告创意"];
+  const srcMt  = ["品牌战略","品牌资讯","品牌资讯","案例拆解","案例拆解"];
+  let time = it.published_at ? timeFromISO(it.published_at) : "近30天";
+  return {
+    id: 100000 + idx,
+    src: s,
+    stype: stype,
+    title: it.title || "",
+    brief: it.summary || "",
+    cat: it.cat || srcCat[s],
+    mt: it.mt || srcMt[s],
+    ch: it.ch || "",
+    time: time.label,
+    _rank: time.rank,
+    feat: 0,
+    tags: it.tags || [],
+    ai: 0,
+    aiText: "",
+    url: it.url || ""
+  };
+}
+function timeFromISO(iso){
+  const t = Date.parse(iso);
+  if(isNaN(t)) return {label:"近30天", rank:4};
+  const diff = Date.now() - t;
+  const h = Math.floor(diff/3600000);
+  if(h < 1) return {label:"刚刚", rank:0};
+  if(h < 24) return {label:`${h}小时前`, rank:0};
+  const d = Math.floor(diff/86400000);
+  if(d === 1) return {label:"昨天", rank:1};
+  if(d === 2) return {label:"前天", rank:2};
+  if(d <= 7) return {label:"近7天", rank:3};
+  return {label:"近30天", rank:4};
+}
+async function loadData(){
+  if(!DATA_URL) return;   // 未配置远程源，用示例
+  try{
+    const resp = await fetch(DATA_URL, {cache:"no-cache"});
+    if(!resp.ok) throw new Error("HTTP "+resp.status);
+    const payload = await resp.json();
+    if(payload && payload.items && payload.items.length){
+      ALL = payload.items.map(normItem);
+      LIVE = true;
+      LIVE_UPDATED = payload.updated_at || "";
+      LIVE_SOURCE = payload.sources || {};
+      if(state.view==="admin") render();
+    }
+  }catch(e){
+    // 加载失败保留示例
+  }
+}
+
+/* ===== 应用筛选 ===== */
+function applyFilters(){
+  const f=state.filters;const q=state.q.trim().toLowerCase();
+  return ALL.filter(a=>{
+    if(q){
+      const hay=(a.title+" "+a.brief+" "+a.tags.join(" ")+" "+SOURCES[a.src].name).toLowerCase();
+      if(!hay.includes(q))return false;
+    }
+    if(f.src!=="all"&&a.src!==+f.src)return false;
+    if(f.type!=="all"&&a.stype!==f.type)return false;
+    if(f.cat!=="all"&&a.cat!==f.cat)return false;
+    if(f.mt!=="all"&&a.mt!==f.mt)return false;
+    if(f.ch!=="all"&&a.ch!==f.ch)return false;
+    if(f.date!=="all"){
+      const r=(a._rank!==undefined)?a._rank:timeRank(a.time);
+      if(f.date==="today"&&r!==0)return false;
+      if(f.date==="yesterday"&&r!==1)return false;
+      if(f.date==="before2"&&r!==2)return false;
+      if(f.date==="week"&&r>3)return false;
+      if(f.date==="month"&&r>4)return false;
+    }
+    return true;
+  });
+}
+
+/* ===== 渲染：卡片 ===== */
+function cardHTML(a){
+  const s=SOURCES[a.src];
+  const typeName=a.stype==="news"?"品牌资讯":a.stype==="case"?"营销案例":"AI营销";
+  const book=state.bookmarks.has(a.id);
+  return `<article class="card" data-id="${a.id}">
+    <div class="card-top">
+      <span class="src-pill ${s.cls}">${esc(s.name)}</span>
+      <span class="type-tag">${typeName}</span>
+      ${a.feat?`<span class="pick-tag">精选</span>`:""}
+      <span class="card-time">${esc(a.time)}</span>
+    </div>
+    <h3 class="card-title">${esc(a.title)}</h3>
+    <p class="card-brief">${esc(cleanBrief(a.brief,a))}</p>
+    <div class="card-tags">${a.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
+    <div class="card-foot">
+      <a class="link-btn" href="javascript:;" data-open>阅读详情
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <button class="fav-btn ${book?'on':''}" data-fav>${book?'<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>已收藏':'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>收藏'}</button>
+    </div>
+  </article>`;
+}
+
+/* ===== 筛选器 ===== */
+function catOptions(){
+  const set=new Set(ALL.map(a=>a.cat));return [...set];
+}
+function filterBar(){
+  const f=state.filters;
+  const cats=["all",...catOptions()];
+  const mts=["all",...new Set(ALL.map(a=>a.mt))];
+  const chs=["all",...new Set(ALL.map(a=>a.ch))];
+  const op=(list,key,cls)=>{
+    return list.map(v=>{
+      const label=v==="all"?"全部":v;
+      return `<button class="f-op ${cls||""} ${f[key]===v?'on':''}" data-fkey="${key}" data-fval="${esc(v)}">${esc(label)}</button>`;
+    }).join("");
+  };
+  const srcOps=`<button class="f-op ${f.src==="all"?'on':''}" data-fkey="src" data-fval="all">全部信源</button>`
+    +SOURCES.map((s,i)=>`<button class="f-op ${f.src===String(i)?'on':''}" data-fkey="src" data-fval="${i}">${esc(s.name)}</button>`).join("");
+  const dateOps=[
+    ["today","今天"],["yesterday","昨天"],["before2","前天"],["week","近7天"],["month","近30天"],["all","全部"]
+  ].map(([v,l])=>`<button class="f-op green ${f.date===v?'on':''}" data-fkey="date" data-fval="${v}">${l}</button>`).join("");
+  return `
+  <div class="filters">
+    <div class="f-row f-head">
+      <span class="f-label">筛选</span>
+      <span class="f-summary" id="fSummary">${filterSummary()}</span>
+      <span class="count-pill" id="countPill">共匹配 N 篇</span>
+      <a class="reset-link ${hasFilter()?'show':''}" href="javascript:;" id="resetFilter">重置</a>
+      <button class="f-toggle" id="fToggle" aria-expanded="false">
+        <span id="fToggleLabel">展开筛选</span>
+        <svg id="fToggleIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </div>
+    <div class="f-body" id="fBody" hidden>
+      <div class="f-row">
+        <span class="f-label">发布日期</span>
+        <div class="f-ops">${dateOps}</div>
+      </div>
+      <div class="f-row">
+        <span class="f-label">信源筛选</span>
+        <div class="f-ops">${srcOps}</div>
+      </div>
+      <div class="f-row">
+        <span class="f-label">行业赛道</span>
+        <div class="f-ops">${op(cats,"cat")}</div>
+      </div>
+      <div class="f-row">
+        <span class="f-label">营销类型</span>
+        <div class="f-ops">${op(mts,"mt")}</div>
+      </div>
+      <div class="f-row">
+        <span class="f-label">传播渠道</span>
+        <div class="f-ops">${op(chs,"ch")}</div>
+      </div>
+    </div>
+  </div>`;
+}
+function filterSummary(){
+  const f=state.filters;
+  const parts=[];
+  const dMap={today:"今天",yesterday:"昨天",before2:"前天",week:"近7天",month:"近30天",all:"全部"};
+  if(f.date!=="today")parts.push("日期·"+(dMap[f.date]||f.date));
+  if(f.src!=="all")parts.push("信源·"+SOURCES[+f.src].name);
+  if(f.cat!=="all")parts.push("行业·"+f.cat);
+  if(f.mt!=="all")parts.push("类型·"+f.mt);
+  if(f.ch!=="all")parts.push("渠道·"+f.ch);
+  if(state.q)parts.push("搜索·"+state.q);
+  return parts.length?parts.join(" · "):"全部条件";
+}
+function hasFilter(){
+  const f=state.filters;
+  return f.date!=="today"||f.src!=="all"||f.cat!=="all"||f.mt!=="all"||f.ch!=="all"||state.q;
+}
+
+/* ===== 视图渲染 ===== */
+/* 从当前抓取数据自动生成"热议词条"：按词库在标题+标签中的命中统计，取高频前若干 */
+const HOT_WORDS=["AI","AIGC","大模型","人工智能","联名","私域","国货","直播","小红书","抖音","社媒","新品","零售","户外","茶饮","美妆","价值观","长效公关","投流","达人","本地生活","即时零售","场景","数字化","会员","门店","快闪","内容营销","增长","ROI","视频模型"];
+function buildHotwords(){
+  const list=applyFilters();
+  const count={};
+  const samples={};
+  for(const a of list){
+    const txt=((a.title||"")+" "+(a.tags||[]).join(" ")).toLowerCase();
+    for(const w of HOT_WORDS){
+      if(txt.indexOf(w.toLowerCase())>=0){
+        count[w]=(count[w]||0)+1;
+        samples[w]=samples[w]||a.title;
+      }
+    }
+  }
+  return Object.entries(count).sort((x,y)=>y[1]-x[1]).slice(0,6)
+    .map(([w,n])=>({w, n, sample:samples[w]||""}));
+}
+/* 从当前抓取数据自动生成"三大破局点"：按行业赛道聚类，取文章数最多的前3个方向 */
+const POINT_DESC={
+  "AI营销":"AI已从炫技走向工业化素材生产与实时投放赛马",
+  "消费":"消费品牌从流量拉新转向用户关系与复购的长效运营",
+  "美妆":"美妆个护用情绪价值与气味叙事做高端化溢价",
+  "科技":"科技品牌以场景化叙事与AI可见度重塑投放逻辑",
+  "食品饮料":"新茶饮与快消用大单品心智与第三空间做粘性",
+  "服饰":"运动户外品牌用社群与在地文化把门店变成能量站",
+  "文娱":"文娱内容借可IP联名与自发梗文化沉淀品牌资产",
+  "医药健康":"健康消费借科学背书与信任建设切入细分心智",
+  "金融":"金融品牌用场景化与内容化降低决策门槛",
+  "品牌战略":"品牌转向不可逆社会议题与价值观长效公关"
+};
+function buildPoints(){
+  const list=applyFilters();
+  const byCat={};
+  for(const a of list){
+    const c=a.cat||"";
+    if(!c) continue;
+    byCat[c]=(byCat[c]||[]).concat(a.title);
+  }
+  const cats=Object.entries(byCat).sort((x,y)=>y[1].length-x[1].length).slice(0,3);
+  return cats.map(([c,arr],i)=>({
+    num:i+1,
+    text:c,
+    desc:POINT_DESC[c]||("围绕「"+c+"」的营销动态集中爆发"),
+    count:arr.length
+  }));
+}
+function renderHome(){
+  const list=applyFilters();
+  const hot=buildHotwords();
+  const points=buildPoints();
+  const today=ALL.filter(a=>(a._rank!==undefined?a._rank:timeRank(a.time))===0).slice(0,6);
+  return `
+  <div class="hero">
+    <div class="hero-head">
+      <div>
+        <div class="hero-eyebrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l2-7 4 14 2-7h4"/></svg>全域营销风向标 · 今日情报速报</div>
+        <div class="hero-title">2026 营销行业三大破局点：${points.map(p=>p.text).join("、")}</div>
+      </div>
+      <div class="hero-update">更新于 2026/10/24 · 每日监测同步</div>
+    </div>
+    <div class="points">
+      ${points.map(p=>`<div class="point"><div class="point-num">${p.num}</div><div class="point-body"><div class="point-text">${esc(p.text)}（${p.count}篇）</div><div class="point-desc">${esc(p.desc)}</div></div></div>`).join("")}
+    </div>
+  </div>
+  <div class="section">
+    <div class="hotwords">
+      <span class="hotword-label">本专栏热议词条</span>
+      ${hot.map(({w,n,sample})=>`<a class="hotword" href="#/" data-q="${esc(w.split("等")[0])}"><b>${esc(w)}</b> ${n}篇</a>`).join("")}
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title"><span class="bar"></span>今日值得关注</div>
+      <a class="section-more" href="#/news">查看全部资讯 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="card-grid">${today.length?today.map(cardHTML).join(""):`<div class="state-box"><span class="big">—</span><p>今天暂无新内容，去看看历史归档吧</p></div>`}</div>
+  </div>
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title"><span class="bar"></span>最新情报流 · 全域聚合</div>
+    </div>
+    ${filterBar()}
+    <div class="card-grid" id="grid">${list.length?list.map(cardHTML).join(""):`<div class="state-box" style="grid-column:1/-1"><span class="big">没有匹配的情报</span><p>试试放宽筛选条件，或换个关键词搜索。</p></div>`}</div>
+  </div>`;
+}
+function renderNews(){
+  const list=applyFilters();
+  return `
+  <div class="page-head">
+    <div>
+      <div class="page-title">品牌资讯</div>
+      <div class="page-sub">来自品牌星球 · 虎嗅网 · 36氪，覆盖品牌战略、消费市场、新品与行业趋势</div>
+    </div>
+  </div>
+  <div class="section">
+    ${filterBar()}
+    <div class="card-grid">${list.length?list.map(cardHTML).join(""):`<div class="state-box" style="grid-column:1/-1"><span class="big">没有匹配的资讯</span><p>试试调整筛选条件。</p></div>`}</div>
+  </div>`;
+}
+function renderCases(){
+  const list=ALL.filter(a=>a.stype==="case").filter(a=>{
+    const f=state.filters;
+    if(f.src!=="all"&&a.src!==+f.src)return false;
+    if(f.cat!=="all"&&a.cat!==f.cat)return false;
+    if(f.mt!=="all"&&a.mt!==f.mt)return false;
+    if(f.ch!=="all"&&a.ch!==f.ch)return false;
+    return true;
+  });
+  return `
+  <div class="page-head">
+    <div>
+      <div class="page-title">营销案例</div>
+      <div class="page-sub">来自 SocialBeta · 数英网，按品牌、行业、营销类型与渠道检索可复用的参考项目</div>
+    </div>
+  </div>
+  <div class="kv-grid">
+    <div class="kv"><h4>按营销类型</h4><p>联名 · IP · 事件营销 · 整合营销 · 议题营销</p></div>
+    <div class="kv"><h4>按传播渠道</h4><p>小红书 · 抖音 · 微信 · 直播 · 线下活动</p></div>
+    <div class="kv"><h4>按行业</h4><p>美妆 · 餐饮 · 汽车 · 科技 · 户外 · 文旅</p></div>
+  </div>
+  <div class="section">
+    ${filterBar()}
+    <div class="card-grid">${list.length?list.map(cardHTML).join(""):`<div class="state-box" style="grid-column:1/-1"><span class="big">没有匹配的案例</span><p>试试调整筛选条件。</p></div>`}</div>
+  </div>`;
+}
+function renderAI(){
+  // 需求：AI 营销专区只聚合「标题」含 AI 关键词的文章
+  const isAI=t=>/ai|aigc|大模型|人工智能|生成式|智能体|agent|gpt|chatgpt|deepseek|midjourney|sora|runway|数字人|ai营销|ai生成|ai工具|算法|机器学习|神经网络|提示词|prompt|llm|自动化内容/i.test(t||"");
+  const list=ALL.filter(a=>isAI(a.title));
+  return `
+  <div class="page-head">
+    <div>
+      <div class="page-title">AI 营销专区</div>
+      <div class="page-sub">标题含 AI 关键词的资讯与案例聚合，看 AI 如何重构营销</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-head"><div class="section-title"><span class="bar"></span>AI 营销动态 · ${list.length} 篇</div></div>
+    <div class="card-grid">${list.length?list.map(cardHTML).join(""):`<div class="state-box" style="grid-column:1/-1"><span class="big">—</span><p>暂未抓到标题含 AI 关键词的内容</p></div>`}</div>
+  </div>`;
+}
+function renderBookmarks(){
+  const list=ALL.filter(a=>state.bookmarks.has(a.id));
+  return `
+  <div class="page-head">
+    <div>
+      <div class="page-title">我的收藏</div>
+      <div class="page-sub">${list.length?`已收藏 ${list.length} 条内容，浏览器本地保存，跨设备可稍后接入账号同步`:"还没有收藏内容"}</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="card-grid">${list.length?list.map(cardHTML).join(""):`<div class="state-box" style="grid-column:1/-1"><span class="big">☆</span><p>在卡片上点击“收藏”，把值得回看的资讯和案例存到这里。</p></div>`}</div>
+  </div>`;
+}
+function renderNotes(){
+  const entries=Object.entries(state.notes);
+  const list=entries.map(([id,text])=>({a:ALL.find(x=>x.id===+id),text,id:+id}))
+    .filter(e=>e.a)
+    .sort((x,y)=>y.id-x.id);
+  const q=state.q.trim().toLowerCase();
+  const shown=q?list.filter(e=>(e.a.title+" "+e.text).toLowerCase().includes(q)):list;
+  return `
+  <div class="page-head">
+    <div>
+      <div class="page-title">我的笔记</div>
+      <div class="page-sub">${shown.length?`共 ${shown.length} 篇笔记，记录读过的文章看法，浏览器本地保存`:"还没有写过笔记"}</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="note-grid">${shown.length?shown.map(({a,text})=>`
+      <article class="card note-card" data-id="${a.id}">
+        <div class="card-top">
+          <span class="src-pill ${SOURCES[a.src].cls}">${esc(SOURCES[a.src].name)}</span>
+          <span class="type-tag">${a.stype==="news"?"品牌资讯":a.stype==="case"?"营销案例":"AI营销"}</span>
+          <span class="card-time">${esc(a.time)}</span>
+          <button class="note-del" data-note-del data-id="${a.id}" title="删除这篇笔记">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+        <h3 class="card-title">${esc(a.title)}</h3>
+        <div class="note-body">${esc(text)}</div>
+      </article>`).join(""):`<div class="state-box" style="grid-column:1/-1"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="margin:0 auto 6px;color:var(--ink-3)"><path d="M4 20h4L19 9a2 2 0 0 0-4-4L4 16v4zM14 6l4 4"/></svg><p>${q?`没有匹配“${esc(q)}”的笔记`:"打开任意一篇文章，在详情里写下笔记，就会汇总到这里。"}</p></div>`}</div>
+  </div>`;
+}
+function renderSearch(){
+  const list=applyFilters();
+  return `
+  <div class="page-head">
+    <div>
+      <div class="page-title">搜索</div>
+      <div class="page-sub">按品牌、战役、行业、关键词检索情报与案例</div>
+    </div>
+  </div>
+  <div class="searchbox">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input type="text" id="searchInput" value="${esc(state.q)}" placeholder="输入品牌、战役或关键词，如：珀莱雅、联名、AI">
+    <button class="search-go" id="searchGo">搜索</button>
+  </div>
+  <div class="search-stat">${state.q?`“${esc(state.q)}” 共找到 ${list.length} 条结果`:"输入关键词开始搜索"}</div>
+  <div class="section">
+    <div class="card-grid">${list.length?list.map(cardHTML).join(""):`<div class="state-box" style="grid-column:1/-1"><span class="big">没有结果</span><p>试试更换关键词，或取消筛选条件。</p></div>`}</div>
+  </div>`;
+}
+function renderAdmin(){
+  const srcStatus=[["品牌星球","API/RSS","正常","32","今天 08:00"],["虎嗅网","RSS","正常","28","今天 08:00"],["36氪","RSS","正常","35","今天 08:00"],["SocialBeta","RSS","正常","19","今天 08:00"],["数英网","RSS","正常","24","今天 08:00"]];
+  const jobs=[["昨日 08:00","全部 5 源","成功","共抓取 148 条，去重后新增 41 条"],["昨日 12:00","全部 5 源","成功","共抓取 96 条，去重后新增 17 条"],["今日 08:00","全部 5 源","进行中","已抓取 64 条，内容整理中"],["今日 08:00","定时任务","待处理","每日自动抓取 5 源，生成当日情报"]];
+  return `
+  <div class="page-head">
+    <div>
+      <div class="page-title">运营后台</div>
+      <div class="page-sub">内容审核 · 发布 · 撤回 · 采集任务监控（演示数据，仅展示运营视图）</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-head"><div class="section-title"><span class="bar"></span>信源状态</div></div>
+    <div class="filters" style="gap:0">
+      ${srcStatus.map(r=>`<div class="f-row" style="padding:8px 0;border-bottom:1px solid var(--line)">
+        <span class="src-pill" style="background:var(--nav-bg)">${r[0]}</span>
+        <span style="font-size:12.5px;color:var(--ink-3)">接入：${r[1]}</span>
+        <span style="margin-left:auto;font-size:12.5px;color:var(--accent);display:flex;align-items:center;gap:5px"><span class="hdot"></span>${r[2]}</span>
+        <span style="font-size:12px;color:var(--ink-3)">今日 ${r[3]} 条 · 最后成功 ${r[4]}</span>
+      </div>`).join("")}
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-head"><div class="section-title"><span class="bar"></span>采集任务</div></div>
+    <div class="filters" style="gap:0">
+      ${jobs.map((r,i)=>`<div class="f-row" style="padding:8px 0;border-bottom:${i===jobs.length-1?"none":"1px solid var(--line)"}">
+        <span style="font-size:13px;font-weight:600;width:110px">${r[0]}</span>
+        <span style="font-size:12.5px;color:var(--ink-3)">${r[1]}</span>
+        <span style="margin-left:auto;font-size:12.5px;${r[2]==="成功"?"color:var(--accent)":"color:var(--ai)"}">${r[2]}</span>
+        <span style="font-size:12px;color:var(--ink-3)">${r[3]}</span>
+      </div>`).join("")}
+    </div>
+  </div>`;
+}
+
+/* ===== 主渲染 ===== */
+function render(){
+  const app=$("#app");
+  const views={home:renderHome,news:renderNews,cases:renderCases,ai:renderAI,bookmarks:renderBookmarks,notes:renderNotes,search:renderSearch,admin:renderAdmin};
+  app.innerHTML=views[state.view]?.()||renderHome();
+  // 导航高亮
+  document.querySelectorAll(".nav-link").forEach(n=>n.classList.toggle("on",n.dataset.view===state.view));
+  document.querySelectorAll("#navLinks .nav-link").forEach(n=>n.style.display="");
+  // 更新计数
+  const pill=$("#countPill");
+  if(pill){const n=applyFilters().length;pill.innerHTML=`共匹配 ${n} 篇情报`;}
+  bindEvents();
+}
+function bindEvents(){
+  // 筛选展开/收起
+  const toggle=$("#fToggle");
+  if(toggle){
+    toggle.addEventListener("click",()=>{
+      const body=$("#fBody");const open=body.hidden;
+      body.hidden=!open;
+      toggle.setAttribute("aria-expanded",String(open));
+      $("#fToggleLabel").textContent=open?"收起筛选":"展开筛选";
+      const ic=$("#fToggleIcon");
+      ic.style.transform=open?"rotate(180deg)":"";
+    });
+  }
+  // 筛选
+  document.querySelectorAll(".f-op").forEach(b=>b.addEventListener("click",()=>{
+    state.filters[b.dataset.fkey]=b.dataset.fval;
+    state.view==="news"?null:null;
+    render();
+    // 保持筛选展开态
+    const body=$("#fBody");if(body&&!body.hidden){$("#fToggle")?.setAttribute("aria-expanded","true");}
+  }));
+  $("#resetFilter")?.addEventListener("click",()=>{state.filters={date:"today",src:"all",cat:"all",mt:"all",ch:"all",type:"all"};state.q="";render();});
+  // 卡片：打开详情
+  document.querySelectorAll(".card[data-id]").forEach(c=>c.addEventListener("click",e=>{
+    if(e.target.closest("[data-fav]"))return;
+    if(e.target.closest("[data-open]"))return;
+    openDetail(+c.dataset.id);
+  }));
+  // 阅读详情链接显式绑定
+  document.querySelectorAll("[data-open]").forEach(a=>a.addEventListener("click",e=>{
+    e.preventDefault();e.stopPropagation();
+    const card=a.closest(".card");
+    if(card)openDetail(+card.dataset.id);
+  }));
+  // 收藏
+  document.querySelectorAll("[data-fav]").forEach(b=>b.addEventListener("click",e=>{
+    e.stopPropagation();
+    const card=b.closest(".card");const id=+card.dataset.id;
+    if(state.bookmarks.has(id)){state.bookmarks.delete(id);}
+    else{state.bookmarks.add(id);}
+    localStorage.setItem("mr_bm",JSON.stringify([...state.bookmarks]));
+    render();
+  }));
+  // 删除单条笔记
+  document.querySelectorAll("[data-note-del]").forEach(b=>b.addEventListener("click",e=>{
+    e.stopPropagation();
+    const id=+b.dataset.id;
+    delete state.notes[id];
+    localStorage.setItem("mr_notes",JSON.stringify(state.notes));
+    render();
+    toast("已删除这篇笔记");
+  }));
+  // 热议词条点击搜索
+  document.querySelectorAll("[data-q]").forEach(a=>a.addEventListener("click",()=>{state.q=a.dataset.q;state.view="search";location.hash="#/search";render();}));
+  // 反馈
+  document.querySelectorAll("[data-feedback]").forEach(a=>a.addEventListener("click",()=>toast("已记录你的反馈，我们会尽快处理。")));
+}
+function openDetail(id){
+  const a=ALL.find(x=>x.id===id);if(!a)return;
+  state.detailId=id;
+  const s=SOURCES[a.src];
+  const typeName=a.stype==="news"?"品牌资讯":a.stype==="case"?"营销案例":"AI营销";
+  const book=state.bookmarks.has(a.id);
+  const panel=$("#modalPanel");
+  panel.innerHTML=`
+    <button class="modal-close" data-close-modal aria-label="关闭"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="d-meta">
+      <span class="src-pill ${s.cls}">${esc(s.name)}</span>
+      <span class="type-tag">${typeName}</span>
+      ${a.feat?`<span class="pick-tag">精选</span>`:""}
+      <span style="margin-left:auto;font-size:12px;color:var(--ink-3)">${esc(a.time)} · 更新于 2026/10/24</span>
+    </div>
+    <h1 class="d-title">${esc(a.title)}</h1>
+    <div class="d-stats">
+      <div class="d-stat"><b>${esc(s.name)}</b><span>来源</span></div>
+      <div class="d-stat"><b>${esc(a.cat)}</b><span>行业赛道</span></div>
+      <div class="d-stat"><b>${esc(a.mt)}</b><span>营销类型</span></div>
+      <div class="d-stat"><b>${esc(a.ch)}</b><span>主要渠道</span></div>
+    </div>
+    <div class="d-block">
+      <h3><span class="bar"></span>内容概要</h3>
+      <div class="d-summary">${renderBrief(a.brief,a)}</div>
+    </div>
+    <div class="d-block">
+      <h3><span class="bar"></span>关键标签</h3>
+      <div class="card-tags">${a.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
+    </div>
+    <div class="d-block">
+      <h3><span class="bar"></span>我的笔记</h3>
+      <textarea class="note-area" data-note-input placeholder="记录这篇的看法、要点或待办，便于之后复习…">${esc(state.notes[a.id]||"")}</textarea>
+      <div class="note-foot">
+        <span class="note-hint">笔记仅保存在本机浏览器</span>
+        <button class="btn note-save" data-note-save>保存笔记</button>
+      </div>
+    </div>
+    <div class="d-actions">
+      <a class="btn btn-primary" href="${(a.url||s.url)}" target="_blank" rel="noopener">前往 ${esc(s.name)} 阅读原文
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg>
+      </a>
+      <button class="btn btn-ghost" data-modal-fav>${book?'<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>已收藏':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>收藏'}</button>
+    </div>`;
+  $("#modal").classList.add("open");
+  document.body.style.overflow="hidden";
+  bindModal();
+}
+function bindModal(){
+  document.querySelectorAll("[data-close-modal]").forEach(e=>e.addEventListener("click",closeModal));
+  document.querySelector("[data-modal-fav]")?.addEventListener("click",()=>{
+    const id=state.detailId;
+    if(state.bookmarks.has(id)){state.bookmarks.delete(id);}else{state.bookmarks.add(id);}
+    localStorage.setItem("mr_bm",JSON.stringify([...state.bookmarks]));
+    render();openDetail(id);
+  });
+  document.querySelector("[data-note-save]")?.addEventListener("click",()=>{
+    const id=state.detailId;
+    const txt=($("[data-note-input]")?.value||"").trim();
+    if(txt){state.notes[id]=txt;}
+    else{delete state.notes[id];}
+    localStorage.setItem("mr_notes",JSON.stringify(state.notes));
+    toast(txt?"笔记已保存":"已清除该篇笔记");
+  });
+}
+function closeModal(){$("#modal").classList.remove("open");document.body.style.overflow="";}
+/* 重新渲染弹层已绑定的关闭事件 */
+$("#modal")?.addEventListener("click",e=>{if(e.target.closest("[data-close-modal]"))closeModal();});
+
+/* ===== toast ===== */
+let toastTimer;
+function toast(msg){
+  let t=$("#toast");
+  if(!t){t=document.createElement("div");t.id="toast";t.style.cssText="position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#0c1322;color:#fff;padding:11px 20px;border-radius:10px;font-size:13.5px;z-index:200;box-shadow:0 8px 30px rgba(0,0,0,.25);opacity:0;transition:.2s";document.body.appendChild(t);}
+  t.textContent=msg;
+  requestAnimationFrame(()=>{t.style.opacity="1";});
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{t.style.opacity="0";},2200);
+}
+
+/* ===== 路由 & 初始化 ===== */
+function parseHash(){
+  const h=location.hash.replace(/^#\//,"")||"";
+  if(h==="")return "home";
+  if(h.startsWith("news"))return "news";
+  if(h.startsWith("cases"))return "cases";
+  if(h.startsWith("ai"))return "ai";
+  if(h.startsWith("bookmarks"))return "bookmarks";
+  if(h.startsWith("notes"))return "notes";
+  if(h.startsWith("admin"))return "admin";
+  if(h.startsWith("search"))return "search";
+  return "home";
+}
+function route(){
+  state.view=parseHash();
+  // 顶部搜索回车 → 搜索页
+  const desk=$("#deskSearch"),sheet=$("#sheetSearch");
+  desk.removeEventListener("keydown",desk._k);desk._k=e=>{if(e.key==="Enter"&&desk.value.trim()){state.q=desk.value.trim();location.hash="#/search";render();}};desk.addEventListener("keydown",desk._k);
+  sheet.removeEventListener("keydown",sheet._k);sheet._k=e=>{if(e.key==="Enter"&&sheet.value.trim()){state.q=sheet.value.trim();$("#sheet").classList.remove("open");location.hash="#/search";render();}};sheet.addEventListener("keydown",sheet._k);
+  render();
+  document.querySelectorAll(".nav-link").forEach(n=>n.classList.toggle("on",n.dataset.view===state.view));
+  const mItems=document.querySelectorAll(".sheet-panel .m-item");
+  mItems.forEach(i=>i.classList.toggle("on",i.dataset.v===state.view));
+}
+/* 导航 */
+document.querySelectorAll(".nav-link[data-view]").forEach(a=>a.addEventListener("click",()=>{
+  state.view=a.dataset.view;render();setTimeout(()=>window.scrollTo({top:0}),0);
+}));
+document.querySelectorAll(".sheet-panel .m-item").forEach(i=>i.addEventListener("click",()=>{
+  state.view=i.dataset.v;render();setTimeout(()=>window.scrollTo({top:0}),0);
+}));
+document.querySelectorAll("[data-close-sheet]").forEach(e=>e.addEventListener("click",()=>$("#sheet").classList.remove("open")));
+$("#hamburger").addEventListener("click",()=>$("#sheet").classList.add("open"));
+$("#mSearchBtn").addEventListener("click",()=>{state.view="search";location.hash="#/search";});
+$("#deskSearch").addEventListener("keydown",()=>{});
+document.querySelector(".search-pill").addEventListener("click",()=>{state.view="search";location.hash="#/search";setTimeout(()=>{$("#searchInput")?.focus();},50);});
+$("#app").addEventListener("click",e=>{
+  const go=e.target.closest("#searchGo");
+  if(go){const inp=$("#searchInput");state.q=inp.value.trim();render();}
+});
+$("#modalPanel").addEventListener("click",e=>{if(e.target.closest("[data-close-modal]"))closeModal();});
+/* 搜索输入监听 */
+window.addEventListener("hashchange",route);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+
+/* 初始化 */
+function init(){
+  $("#stripDate").textContent= todayStr();
+  route();
+  // 桌面搜索输入实时跳转
+  $("#deskSearch").addEventListener("keydown",()=>{});
+  $("#sheetSearch").addEventListener("input",()=>{});
+  // 异步加载实时数据（若配置 DATA_URL），加载完成后刷新
+  loadData().then(()=>{
+    if(LIVE){
+      const srcInfo = document.querySelector(".strip-sources");
+      const updated = LIVE_UPDATED ? ` · 数据更新于 ${LIVE_UPDATED.replace("T"," ").slice(0,16).replace("Z","")}Z` : "";
+      // 更新健康度状态
+      const fail = Object.values(LIVE_SOURCE).some(r=>r && r.status!=="ok" && r.status!=="empty");
+      const hp = document.querySelector(".strip-health");
+      if(hp){hp.querySelector("span").textContent = fail ? "部分信源待重试" : "信源健康度：正常";}
+      if(updated && document.querySelector(".strip-date")){
+        document.querySelector(".strip-date").textContent += updated;
+      }
+    }
+    if(state.view==="home"||state.view==="news"||state.view==="cases") render();
+  });
+}
+init();
+</script>
+</body>
+</html>
